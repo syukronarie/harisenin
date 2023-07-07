@@ -1,27 +1,69 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import ListProducts from "../components/listProducts";
 
 export default function Home() {
-	const article = {
-		title: "Lorem ipsum dolor sit amet consectetur.",
-		content:
-			"Lorem ipsum dolor, sit amet consectetur adipisicing elit. Animi quam enim quaerat non nisi eligendi molestiae, repudiandae provident libero totam quas ipsa quis soluta odio, possimus, fugiat ad maxime nemo.",
-	};
+	const [categories, setCategories] = useState([]);
+	const [products, setProducts] = useState([]);
+	const [category, setCategory] = useState("");
 
-	const navigate = useNavigate();
+	// no dependency is only running in first render / mounting phase
+	useEffect(() => {
+		fetch("https://dummyjson.com/products")
+			.then((res) => res.json())
+			.then((data) => setProducts(data.products));
 
-	const handleNavigate = () => {
-		navigate("/about", { state: "hello" });
+		fetch("https://dummyjson.com/products/categories")
+			.then((res) => res.json())
+			.then((data) => setCategories(data));
+	}, []);
+
+	// updating due to dependency changes / updating phase
+	useEffect(() => {
+		if (category) {
+			setCategory(category);
+			fetch(`https://dummyjson.com/products/category/${category}`)
+				.then((res) => res.json())
+				.then((data) => setProducts(data.products));
+		}
+	}, [category]);
+
+	// unmounting
+	useEffect(() => {
+		return () => {
+			setProducts([]);
+			setCategories([]);
+			setCategory("");
+		};
+	}, []);
+
+	const handleChangeCategory = (e) => {
+		setCategory(e.target.value);
 	};
 
 	return (
-		<div>
+		<div style={{ paddingLeft: "10px" }}>
 			<h1>Home page</h1>
-			<h2>{article.title}</h2>
-			<p>{article.content}</p>
-			<p>{article?.createdAt}</p>
-			<Link to="/about">go to about page</Link>
-			<button onClick={handleNavigate}>go to about with state</button>
+
+			<select value={category} onChange={handleChangeCategory}>
+				{categories.map((val) => (
+					<option key={val} value={val}>
+						{val}
+					</option>
+				))}
+			</select>
+
+			<ListProducts products={products} />
+
+			<div>
+				<Link to="/about">go to about page</Link>
+			</div>
+			<div>
+				<Link to="/profile">go to profile page</Link>
+			</div>
+			<div>
+				<Link to="/login">go to login page</Link>
+			</div>
 		</div>
 	);
 }
