@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function ListProducts({ products }) {
 	return (
@@ -14,6 +15,7 @@ export default function ListProducts({ products }) {
 					/>
 					<p>{product.category}</p>
 					<p>{product.description}</p>
+					<Link to={`/product/${product.id}`}>See more</Link>
 				</div>
 			))}
 		</div>

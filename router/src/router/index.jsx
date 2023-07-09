@@ -11,6 +11,7 @@ import PrivateRoute from "./private-route";
 import Unauthorized from "../pages/unauthorized";
 import ProtectedRoute from "./protected-route";
 import Layout from "../pages/layout";
+import ProductDetail from "../components/product-detail";
 
 export default function RootRouter() {
 	return (
@@ -22,6 +23,7 @@ export default function RootRouter() {
 				<Route index element={<Home />} />
 				<Route path="/about" element={<About />} />
 				<Route path="/contact" element={<Contact />} />
+				<Route path="/product/:id" element={<ProductDetail />} />
 				<Route path="/401" element={<Unauthorized />} />
 			</Route>
 			<Route path="/" element={<ProtectedRoute />}>

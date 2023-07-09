@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import ListProducts from "../components/listProducts";
+import ListProducts from "../components/list-products";
 
 export default function Home() {
 	const [categories, setCategories] = useState([]);
@@ -16,6 +16,12 @@ export default function Home() {
 		fetch("https://dummyjson.com/products/categories")
 			.then((res) => res.json())
 			.then((data) => setCategories(data));
+
+		console.log("useEffect");
+	}, []);
+
+	useLayoutEffect(() => {
+		console.log("useLayoutEffect");
 	}, []);
 
 	// updating due to dependency changes / updating phase
