@@ -1,40 +1,68 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState, use, useDebugValue } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import auth from "../utils/auth";
 
-export default function HomePage() {
-	const [state, setState] = useState();
-	const navigate = useNavigate();
+export function createConnection(serverUrl, roomId) {
+	// A real implementation would actually connect to the server
+	return {
+		connect() {
+			console.log(
+				'✅ Connecting to "' + roomId + '" room at ' + serverUrl + "..."
+			);
+		},
+		disconnect() {
+			console.log('❌ Disconnected from "' + roomId + '" room at ' + serverUrl);
+		},
+	};
+}
+
+function ChatRoom({ roomId }) {
+	const [serverUrl, setServerUrl] = useState("https://localhost:1234");
 
 	useEffect(() => {
-		fetch("https://dummyjson.com/products")
-			.then((res) => res.json())
-			.then(setState);
-	}, []);
+		console.log(roomId);
+		const connection = createConnection(serverUrl, roomId);
+		connection.connect();
+
+		return () => {
+			connection.disconnect();
+		};
+	}, [roomId, serverUrl]);
+
+	useDebugValue(roomId);
 
 	return (
-		<div>
-			<h1>Homepage</h1>
-			<h2>Our Products</h2>
-			<button onClick={() => auth.logout()}>Logout</button>
-			{state ? (
-				<div className="products">
-					{state.products.map((product) => (
-						<div className="products_item" key={product.id}>
-							<Link to={`/products/${product.id}`}>
-								<h3>{product.title}</h3>
-							</Link>
-							<p>{product.category}</p>
-							<img src={product.thumbnail} alt={product.title} />
-							<p>Price ${product.price}</p>
-						</div>
-					))}
-				</div>
-			) : (
-				<p>Loading bos</p>
-			)}
-			<div>{}</div>
-			<Link to="/contact-us">Contact Us</Link>
-		</div>
+		<>
+			<label>
+				Server URL:{" "}
+				<input
+					value={serverUrl}
+					onChange={(e) => setServerUrl(e.target.value)}
+				/>
+			</label>
+			<h1>Welcome to the {roomId} room!</h1>
+		</>
+	);
+}
+
+export default function HomePage() {
+	const [roomId, setRoomId] = useState("general");
+	const [show, setShow] = useState(false);
+	return (
+		<>
+			<label>
+				Choose the chat room:{" "}
+				<select value={roomId} onChange={(e) => setRoomId(e.target.value)}>
+					<option value="general">general</option>
+					<option value="travel">travel</option>
+					<option value="music">music</option>
+				</select>
+			</label>
+			<button onClick={() => setShow(!show)}>
+				{show ? "Close chat" : "Open chat"}
+			</button>
+			{show && <hr />}
+			{show && <ChatRoom roomId={roomId} />}
+		</>
 	);
 }

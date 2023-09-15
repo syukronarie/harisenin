@@ -2,7 +2,8 @@ import Cookies from "js-cookie";
 
 const auth = {
 	isAuthenticated: () => {
-		return Cookies.get("token");
+		// return Cookies.get("token");
+		return "ok";
 	},
 	storeAuthCredential: (token) => {
 		return Cookies.set("token", token);

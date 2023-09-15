@@ -6,6 +6,7 @@ import ProductDetailsPage from "../pages/product-details-page";
 import LoginPage from "../pages/login-page";
 import PrivateRoute from "./private-route";
 import ProtectedRoute from "./protected-route";
+import CreateProductPage from "../pages/create-product";
 
 export default function Routers() {
 	return (
@@ -13,6 +14,7 @@ export default function Routers() {
 			<Route path="/contact-us" element={<ContactUsPage />} />
 			<Route path="/" element={<PrivateRoute />}>
 				<Route index element={<HomePage />} />
+				<Route path="/add-product" element={<CreateProductPage />} />
 				<Route path="/products/:id" element={<ProductDetailsPage />} />
 			</Route>
 			<Route path="/" element={<ProtectedRoute />}>
