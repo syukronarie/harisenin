@@ -37,12 +37,10 @@ module.exports = {
     'no-unused-vars': 'warn',
     'import/no-unresolved': 'error',
     'import/extensions': 'off',
-    'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
     'react/jsx-filename-extension': [
       2,
       {
-        extensions: ['.js', '.jsx'],
+        extensions: ['.ts', '.tsx'],
       },
     ],
     'react/function-component-definition': [

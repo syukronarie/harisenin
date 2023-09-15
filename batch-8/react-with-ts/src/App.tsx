@@ -11,7 +11,10 @@ function App() {
   return (
     <div className="App">
       <h1>Count: {count}</h1>
-      <button onClick={() => setCount((n) => n + 1)}>Increment</button>
+
+      <button type="button" onClick={() => setCount((n) => n + 1)}>
+        Increment
+      </button>
     </div>
   );
 }
