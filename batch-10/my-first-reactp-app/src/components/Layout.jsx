@@ -18,7 +18,7 @@ const Layout = (props) => {
 
 	return (
 		<div className={classTheme}>
-			<button onClick={toggleTheme}>Toggle Theme</button>
+			{/* <button onClick={toggleTheme}>Toggle Theme</button> */}
 			<Header />
 			<main>{props.children}</main>
 			<Footer />
